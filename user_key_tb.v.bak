@@ -1,0 +1,43 @@
+`timescale 1ns / 1ps
+
+module user_key_tb;
+
+  // Parameters
+  parameter CLK_PERIOD = 10; // Clock period in nanoseconds
+
+  // Inputs
+  reg [31:0] in0;
+  reg [31:0] key;
+
+  // Outputs
+  wire [31:0] out;
+
+  // Instantiate the module under test
+  user_key uut (
+    .in0(in0),
+    .key(key),
+    .out(out)
+  );
+
+  // Initial block
+  initial begin
+    // Initialize inputs
+    in0 = 32'h12345678;
+    key = 32'b11000000000000000000000000000011;
+
+    // Apply stimulus
+    #10;
+    in0 = 32'h87654321;
+
+    // Display results
+    $display("Input: %h", in0);
+    $display("Key: %h", key);
+    #10;
+    $display("Output: %h", out);
+
+    // Finish simulation
+    #10;
+    $finish;
+  end
+
+endmodule

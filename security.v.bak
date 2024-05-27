@@ -1,0 +1,31 @@
+module security(rst,clk,data_in,data_out_S,key);
+input [31:0] data_in;
+input [31:0] key;
+input clk,rst_n;
+output data_out_S; // data_out_S = data_in
+
+// input HELLO WORLD = 0101010101010111010 1010110101101010110101 => data_in
+//								HELLO 						WORLD
+
+reg [31:0] X;
+wire [31:0]data_out;
+wire [31:0]data_out2;
+wire [31:0]data_outfifo;
+
+assign X = data_in ^ 32'b00000000000000000000000000011111;
+//KEY = 00000000000000000000000000011111
+
+//fifo_mem ff1(data_out,fifo_full, fifo_empty, fifo_threshold, fifo_overflow, fifo_underflow,clk, rst_n, wr, rd, X); 
+LIFO lf1(data_out, lifo_ov, lifo_ud,lifo_low_th, lifo_high_th, clk, rst_n, wr, rd, X);  
+FIFO ff1(data_outfifo,fifo_full, fifo_empty, fifo_threshold, fifo_overflow, fifo_underflow,clk, rst_n, wr, rd, data_out); 
+always(*)
+begin
+case(key)
+	32'b00000000000000000000000000011111: 
+	LIFO lf2(data_out2, lifo_ov, lifo_ud,lifo_low_th, lifo_high_th, clk, rst_n, wr, rd, dataoutfifo); //data_out2 = X
+	data_out_S = data_out2 ^ 32'b00000000000000000000000000011111,// data_out_S = data_in
+	
+	default 
+	key = 32'b00000000000000000000000000000000;
+	data_out_S = 32'bz;
+end

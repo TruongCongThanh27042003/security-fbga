@@ -1,0 +1,15 @@
+module user_key (
+   input [31:0] in0, 
+  input [31:0] sel,
+  output  reg [31:0] out
+);
+
+   always @(*) begin
+      if (sel == 5'b10101010101010101010101010101010)
+         out <= in12;
+      else
+         out <= 32'bz;
+   end
+
+endmodule
+//data_output = data_inputs[select];

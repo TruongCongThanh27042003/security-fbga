@@ -1,0 +1,9 @@
+module mux32_to_1 (
+  input wire [31:0] data_inputs [0:31],
+  input wire [4:0] select,
+  output wire [31:0] data_output
+);
+
+  assign data_output = data_inputs[select];
+
+endmodule
